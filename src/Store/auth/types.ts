@@ -7,6 +7,8 @@ export interface user {
   createdAt: string
   updatedAt: string
   provider: string
+  firstName: string
+  lastName: string
 }
 
 export interface initialStateType {
@@ -17,16 +19,7 @@ export interface initialStateType {
 
 export interface loginSuccessResponse {
   jwt: string
-  user: {
-    id: number
-    username: string
-    email: string
-    confirmed: boolean
-    blocked: boolean
-    createdAt: string
-    updatedAt: string
-    provider: string
-  }
+  user: user
 }
 
 export interface crudentials {
