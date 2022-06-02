@@ -6,7 +6,7 @@ const NameAvatar = () => {
   const { stateVal } = useAuth()
   return (
     <Avatar>
-      `${stateVal.user?.firstName[0]} ${stateVal.user?.lastName[0]}`
+      {`${stateVal.user?.firstName[0]} ${stateVal.user?.lastName[0]}`}
     </Avatar>
   )
 }
