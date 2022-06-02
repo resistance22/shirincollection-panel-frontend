@@ -1,7 +1,7 @@
 import { Button } from "@mui/material"
 import { useAuth } from 'src/hooks'
 
-export const LogoutBtn = () => {
+const LogoutBtn = () => {
   const { dispatchLogout } = useAuth()
   return (
     <Button
@@ -12,3 +12,5 @@ export const LogoutBtn = () => {
       Logout
     </Button>)
 }
+
+export default LogoutBtn
