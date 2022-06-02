@@ -32,6 +32,7 @@ export const authSlice = createSlice({
   reducers: {
     logout: (state) => {
       localStorage.removeItem("jwt")
+      delete axios.defaults.headers.common['Authorization']
       state.user = null
       state.authenticated = false
       state.loading = false
