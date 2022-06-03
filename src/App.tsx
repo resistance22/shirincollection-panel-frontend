@@ -22,7 +22,7 @@ function App() {
         <Routes>
           <Route path='/' element={<LoginPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path='/panel' element={<PanelPage />} />
+            <Route path='/panel/*' element={<PanelPage />} />
           </Route>
         </Routes>
       </div>
