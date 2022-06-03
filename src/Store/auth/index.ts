@@ -64,6 +64,7 @@ export const authSlice = createSlice({
       state.loading = true
     })
     builder.addCase(loginWithStorageToken.rejected, (state, action) => {
+      delete axios.defaults.headers.common['Authorization']
       localStorage.removeItem("jwt")
       state.user = null
       state.authenticated = false
