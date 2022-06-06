@@ -10,8 +10,8 @@ const initialState = {
 
 
 
-export const createProduct = createAsyncThunk("auth/login", async (newProduct: NewProduct) => {
-  const response = await axios.post<Product>("http://localhost:1337/api/products", newProduct)
+export const createProduct = createAsyncThunk("products/create", async (newProduct: NewProduct) => {
+  const response = await axios.post<Product>("http://localhost:1337/api/products", { data: newProduct })
   return response.data
 }, {
   serializeError: (err: any) => {
@@ -34,6 +34,7 @@ export const productsSlice = createSlice({
         [action.payload.id]: action.payload
       }
       state.loading = false
+      toast.success("Product Added successfully")
     })
     builder.addCase(createProduct.rejected, (state, action) => {
       state.loading = false
