@@ -1,7 +1,8 @@
-import { Button, Grid, TextField, TextareaAutosize, IconButton } from "@mui/material"
+import { Button, Grid, TextField, TextareaAutosize, IconButton, CircularProgress } from "@mui/material"
 import { Add, Remove } from '@mui/icons-material'
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { useProduct } from 'src/hooks'
 import * as yup from 'yup'
 
 interface EntryItem {
@@ -11,7 +12,7 @@ interface EntryItem {
 
 interface Product {
   Title: string
-  Description?: string
+  Description: string
   Percent: number
   entry_items: EntryItem[]
 }
@@ -31,11 +32,11 @@ export const NewProductFrom = () => {
   const { control, register, handleSubmit, formState: { errors } } = useForm<Product>({
     resolver: yupResolver(formSchema)
   })
+  const { dispatchCreateProduct, stateVal } = useProduct()
   const { fields, append, remove } = useFieldArray({ control, name: "entry_items" })
   const onSubmit: SubmitHandler<Product> = data => {
-    console.log(data)
+    dispatchCreateProduct(data)
   }
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={0.5}>
@@ -116,6 +117,8 @@ export const NewProductFrom = () => {
           <Button
             variant="contained"
             onClick={handleSubmit(onSubmit)}
+            disabled={stateVal.loading}
+            startIcon={stateVal.loading ? <CircularProgress size={20} /> : ""}
           >
             Add New Product
           </Button>
