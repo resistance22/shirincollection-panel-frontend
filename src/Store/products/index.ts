@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { initialStateType, NewProduct, Product } from './types'
+import { initialStateType, NewProduct, Product, getProductsResponse, EntryItem } from './types'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -24,7 +24,7 @@ export const createProduct = createAsyncThunk("products/create", async (newProdu
 })
 
 export const getProducts = createAsyncThunk("products/getAll", async () => {
-  const response = await axios.get<Product>("http://localhost:1337/api/products?pagination[page]=2&pagination[pageSize]=1")
+  const response = await axios.get<getProductsResponse>("http://localhost:1337/api/products?pagination[page]=2&pagination[pageSize]=1")
   return response.data
 }, {
   serializeError: (err: any) => {
@@ -49,6 +49,42 @@ export const productsSlice = createSlice({
       toast.success("Product Added successfully")
     })
     builder.addCase(createProduct.rejected, (state, action) => {
+      state.loading = false
+      toast.error(action.error.message || "something went wrong")
+    })
+    builder.addCase(getProducts.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(getProducts.fulfilled, (state, action) => {
+      state.loading = false
+      const products: { [id: number]: Product } = action.payload.data.reduce((acc, productItem) => {
+        return {
+          ...acc,
+          [productItem.id]: {
+            id: productItem.id,
+            Title: productItem.attributes.Title,
+            Description: productItem.attributes.Description,
+            Percent: productItem.attributes.Percent,
+            publishedAt: null,
+            entry_items: productItem.attributes.entry_items.reduce((acc, entry_item) => {
+              const obj: EntryItem = {
+                id: entry_item.id,
+                Title: entry_item.attributes.Title,
+                createdAt: entry_item.attributes.createdAt,
+                updatedAt: entry_item.attributes.updatedAt,
+                publishedAt: null,
+                defaultValue: entry_item.attributes.defaultValue,
+              }
+              return [...acc, obj]
+            }, [] as EntryItem[])
+          }
+        }
+      }, {})
+      state.products = products
+      state.pagination.page = action.payload.meta.pagination.page
+      state.pagination.pageCount = action.payload.meta.pagination.pageCount
+    })
+    builder.addCase(getProducts.rejected, (state, action) => {
       state.loading = false
       toast.error(action.error.message || "something went wrong")
     })

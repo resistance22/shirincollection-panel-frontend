@@ -33,3 +33,36 @@ export interface initialStateType {
     pageCount: number
   }
 }
+
+export interface getProductsResponse {
+
+  data:
+  {
+    id: number,
+    attributes: {
+      Title: string,
+      Description: string,
+      Percent: number,
+      createdAt: string,
+      updatedAt: string,
+      entry_items: {
+        id: number,
+        attributes: {
+          Title: string,
+          createdAt: string,
+          updatedAt: string,
+          defaultValue: number
+        }
+      }[]
+    },
+  }[],
+  meta: {
+    pagination: {
+      page: number,
+      pageSize: number,
+      pageCount: number,
+      total: number
+    }
+  }
+
+}
