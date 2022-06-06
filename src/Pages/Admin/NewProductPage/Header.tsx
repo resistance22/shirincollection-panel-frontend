@@ -1,8 +1,6 @@
-import { Box, Button, Typography } from '@mui/material'
-import { Add } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
+import { Box, Typography } from '@mui/material'
+
 export const Header = () => {
-  const navigate = useNavigate()
   return (
     <header className="products-header">
       <Box
