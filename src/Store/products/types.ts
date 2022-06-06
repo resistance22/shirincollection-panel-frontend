@@ -13,6 +13,7 @@ export interface EntryItem extends NewEntryItem {
 export interface NewProduct {
   Title: string
   Description: string,
+  Percent: number,
   entry_items: NewEntryItem[]
 }
 
@@ -26,5 +27,9 @@ export interface Product extends NewProduct {
 
 export interface initialStateType {
   products: { [id: number]: Product }
-  loading: boolean
+  loading: boolean,
+  pagination: {
+    page: number,
+    pageCount: number
+  }
 }

@@ -5,7 +5,11 @@ import axios from 'axios'
 
 const initialState = {
   products: {},
-  loading: false
+  loading: false,
+  pagination: {
+    page: 0,
+    pageCount: 0
+  }
 } as initialStateType
 
 
@@ -19,6 +23,14 @@ export const createProduct = createAsyncThunk("products/create", async (newProdu
   }
 })
 
+export const getProducts = createAsyncThunk("products/getAll", async () => {
+  const response = await axios.get<Product>("http://localhost:1337/api/products?pagination[page]=2&pagination[pageSize]=1")
+  return response.data
+}, {
+  serializeError: (err: any) => {
+    return { message: err.response.data.error.message, code: err.response.status }
+  }
+})
 
 export const productsSlice = createSlice({
   name: 'products',
