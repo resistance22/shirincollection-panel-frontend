@@ -23,8 +23,8 @@ export const createProduct = createAsyncThunk("products/create", async (newProdu
   }
 })
 
-export const getProducts = createAsyncThunk("products/getAll", async () => {
-  const response = await axios.get<getProductsResponse>("http://localhost:1337/api/products?pagination[page]=2&pagination[pageSize]=1")
+export const getProducts = createAsyncThunk("products/getAll", async (page: number) => {
+  const response = await axios.get<getProductsResponse>(`http://localhost:1337/api/products?pagination[page]=${page}&pagination[pageSize]=10&populate=entry_items`)
   return response.data
 }, {
   serializeError: (err: any) => {
@@ -35,16 +35,18 @@ export const getProducts = createAsyncThunk("products/getAll", async () => {
 export const productsSlice = createSlice({
   name: 'products',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.loading = false
+      state.products = initialState.products
+      state.pagination = initialState.pagination
+    }
+  },
   extraReducers: (builder) => {
     builder.addCase(createProduct.pending, (state) => {
       state.loading = true
     })
-    builder.addCase(createProduct.fulfilled, (state, action) => {
-      state.products = {
-        ...state.products,
-        [action.payload.id]: action.payload
-      }
+    builder.addCase(createProduct.fulfilled, (state) => {
       state.loading = false
       toast.success("Product Added successfully")
     })
@@ -57,6 +59,7 @@ export const productsSlice = createSlice({
     })
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.loading = false
+      console.log(action.payload.data)
       const products: { [id: number]: Product } = action.payload.data.reduce((acc, productItem) => {
         return {
           ...acc,
@@ -66,7 +69,7 @@ export const productsSlice = createSlice({
             Description: productItem.attributes.Description,
             Percent: productItem.attributes.Percent,
             publishedAt: null,
-            entry_items: productItem.attributes.entry_items.reduce((acc, entry_item) => {
+            entry_items: productItem.attributes.entry_items.data.reduce((acc, entry_item) => {
               const obj: EntryItem = {
                 id: entry_item.id,
                 Title: entry_item.attributes.Title,

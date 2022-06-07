@@ -46,14 +46,16 @@ export interface getProductsResponse {
       createdAt: string,
       updatedAt: string,
       entry_items: {
-        id: number,
-        attributes: {
-          Title: string,
-          createdAt: string,
-          updatedAt: string,
-          defaultValue: number
-        }
-      }[]
+        data: {
+          id: number,
+          attributes: {
+            Title: string,
+            createdAt: string,
+            updatedAt: string,
+            defaultValue: number
+          }
+        }[]
+      }
     },
   }[],
   meta: {
