@@ -1,9 +1,14 @@
 import { Header } from './header'
+import { Page } from 'src/Components'
+import { ProductList } from './ProductList'
 
 export const ProductsPage = () => {
   return (
-    <>
-      <Header />
-    </>
+    <Page
+      Header={<Header />}
+      PageContent={<ProductList />}
+    />
+
   )
 }
+
