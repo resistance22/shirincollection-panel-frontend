@@ -6,6 +6,7 @@ import axios from 'axios'
 const initialState = {
   products: {},
   loading: false,
+  deleting: null,
   pagination: {
     page: 0,
     pageCount: 0
@@ -25,6 +26,16 @@ export const createProduct = createAsyncThunk("products/create", async (newProdu
 
 export const getProducts = createAsyncThunk("products/getAll", async (page: number) => {
   const response = await axios.get<getProductsResponse>(`http://localhost:1337/api/products?pagination[page]=${page}&pagination[pageSize]=10&populate=entry_items`)
+  return response.data
+}, {
+  serializeError: (err: any) => {
+    return { message: err.response.data.error.message, code: err.response.status }
+  }
+})
+
+
+export const deleteProduct = createAsyncThunk("products/delete", async (id: number) => {
+  const response = await axios.delete<{ id: number }>(`http://localhost:1337/api/products/${id}`)
   return response.data
 }, {
   serializeError: (err: any) => {
@@ -88,6 +99,17 @@ export const productsSlice = createSlice({
     })
     builder.addCase(getProducts.rejected, (state, action) => {
       state.loading = false
+      toast.error(action.error.message || "something went wrong")
+    })
+    builder.addCase(deleteProduct.pending, (state, action) => {
+      state.deleting = action.meta.arg
+    })
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      delete state.products[action.payload.id]
+      state.deleting = null
+    })
+    builder.addCase(deleteProduct.rejected, (state, action) => {
+      state.deleting = null
       toast.error(action.error.message || "something went wrong")
     })
   }

@@ -28,6 +28,7 @@ export interface Product extends NewProduct {
 export interface initialStateType {
   products: { [id: number]: Product }
   loading: boolean,
+  deleting: number | null,
   pagination: {
     page: number,
     pageCount: number
