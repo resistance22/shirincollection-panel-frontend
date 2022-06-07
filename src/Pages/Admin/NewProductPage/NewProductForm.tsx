@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, TextareaAutosize, IconButton, CircularProgress } from "@mui/material"
+import { Button, Grid, TextField, TextareaAutosize, IconButton, CircularProgress, Tooltip } from "@mui/material"
 import { Add, Remove } from '@mui/icons-material'
 import { useForm, SubmitHandler, useFieldArray } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -104,14 +104,16 @@ export const NewProductFrom = () => {
 
             )
           })}
-          <IconButton
-            onClick={() => append({
-              Title: "",
-              defaultValue: 0
-            })}
-          >
-            <Add />
-          </IconButton>
+          <Tooltip title="Add Expense">
+            <IconButton
+              onClick={() => append({
+                Title: "",
+                defaultValue: 0
+              })}
+            >
+              <Add />
+            </IconButton>
+          </Tooltip>
         </Grid>
         <Grid item xs={3}>
           <Button
