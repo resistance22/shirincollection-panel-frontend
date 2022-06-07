@@ -11,6 +11,7 @@ export const Loading = () => {
           borderRadius: "10px"
         }}
         height="50px"
+        key={i}
       />
     )
   }
