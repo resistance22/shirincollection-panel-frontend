@@ -59,7 +59,6 @@ export const productsSlice = createSlice({
     })
     builder.addCase(getProducts.fulfilled, (state, action) => {
       state.loading = false
-      console.log(action.payload.data)
       const products: { [id: number]: Product } = action.payload.data.reduce((acc, productItem) => {
         return {
           ...acc,
