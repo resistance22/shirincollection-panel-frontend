@@ -10,15 +10,16 @@ import {
 } from '@mui/material'
 import { Delete } from '@mui/icons-material'
 import { FC, useState } from 'react'
-
+import { useProduct } from 'src/hooks'
 interface props {
   id: number
 }
 
-const DeleteProductBtn: FC<props> = () => {
+const DeleteProductBtn: FC<props> = ({ id }) => {
+  const { dispatchDeleteProduct } = useProduct()
   const [open, setOpen] = useState<boolean>(false)
   const handleAgree = () => {
-    console.log("Agree")
+    dispatchDeleteProduct(id)
     setOpen(false)
   }
   const handleDisagree = () => {
