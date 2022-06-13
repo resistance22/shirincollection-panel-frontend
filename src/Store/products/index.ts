@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { initialStateType, NewProduct, Product, getProductsResponse, EntryItem } from './types'
+import { initialStateType, NewProduct, Product, getProductsResponse, getSingleProductResponse } from './types'
 import { toast } from 'react-toastify'
+import { sanitizeGetProductResult } from 'src/utils'
 import axios from 'axios'
 
 const initialState = {
@@ -47,11 +48,7 @@ export const productsSlice = createSlice({
   name: 'products',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.loading = false
-      state.products = initialState.products
-      state.pagination = initialState.pagination
-    }
+    reset: () => initialState
   },
   extraReducers: (builder) => {
     builder.addCase(createProduct.pending, (state) => {
@@ -73,24 +70,7 @@ export const productsSlice = createSlice({
       const products: { [id: number]: Product } = action.payload.data.reduce((acc, productItem) => {
         return {
           ...acc,
-          [productItem.id]: {
-            id: productItem.id,
-            Title: productItem.attributes.Title,
-            Description: productItem.attributes.Description,
-            Percent: productItem.attributes.Percent,
-            publishedAt: null,
-            entry_items: productItem.attributes.entry_items.data.reduce((acc, entry_item) => {
-              const obj: EntryItem = {
-                id: entry_item.id,
-                Title: entry_item.attributes.Title,
-                createdAt: entry_item.attributes.createdAt,
-                updatedAt: entry_item.attributes.updatedAt,
-                publishedAt: null,
-                defaultValue: entry_item.attributes.defaultValue,
-              }
-              return [...acc, obj]
-            }, [] as EntryItem[])
-          }
+          [productItem.id]: sanitizeGetProductResult(productItem)
         }
       }, {})
       state.products = products
