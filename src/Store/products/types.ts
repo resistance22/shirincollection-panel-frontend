@@ -29,14 +29,40 @@ export interface initialStateType {
   products: { [id: number]: Product }
   loading: boolean,
   deleting: number | null,
+  singleProduct: Product | null,
   pagination: {
     page: number,
     pageCount: number
   }
 }
 
-export interface getProductsResponse {
+export interface unsanitizedProduct {
+  id: number,
+  attributes: {
+    Title: string,
+    Description: string,
+    Percent: number,
+    createdAt: string,
+    updatedAt: string,
+    entry_items: {
+      data: {
+        id: number,
+        attributes: {
+          Title: string,
+          createdAt: string,
+          updatedAt: string,
+          defaultValue: number
+        }
+      }[]
+    }
+  },
+}
 
+export interface getSingleProductResponse {
+  data: unsanitizedProduct
+}
+
+export interface getProductsResponse {
   data:
   {
     id: number,
