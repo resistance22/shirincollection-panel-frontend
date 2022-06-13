@@ -15,6 +15,7 @@ import {
 import { LogoutBtn, NameAvatar } from "src/Components"
 import { Inventory } from '@mui/icons-material'
 import { ProductsPage } from './Products'
+import { UpdateProduct } from './UpdateProductPage'
 import { NewProduct } from './NewProductPage'
 import { Routes, Route, Link } from "react-router-dom"
 
@@ -84,6 +85,7 @@ export const PanelPage = () => {
             <Route path='/' element={<ProductsPage />} />
             <Route path='expenses' element={<h1>Expenses</h1>} />
             <Route path='new-product' element={<NewProduct />} />
+            <Route path='products/:productID' element={<UpdateProduct />} />
           </Routes>
         </Box>
       </Box>
