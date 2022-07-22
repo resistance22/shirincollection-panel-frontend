@@ -1,5 +1,6 @@
 .App {
-  text-align: center;
+  text-align: right;
+  direction: rtl;
 }
 
 .App-logo {
@@ -32,6 +33,7 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
@@ -39,4 +41,56 @@
 
 button {
   font-size: calc(10px + 2vmin);
+}
+
+
+.product-item {
+  padding: 5px 0;
+  border-bottom: 1px solid #dfdfdf;
+}
+
+
+
+.table-header {
+  padding: 25px 0;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+}
+
+.PageHeader {
+  margin-bottom: 100px;
+}
+
+#root {
+  max-width: 85%;
+  margin: 0 auto;
+}
+
+.product-title,
+.product-price {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.product-image {
+  text-align: center;
+  display: inline-block;
+  border-radius: 78px;
+  overflow: hidden;
+  height: 75px;
+  width: 75px;
+  transition: all 0.6s ease-in-out;
+}
+
+.product-image:hover {
+  width: 125px;
+  height: 125px;
+}
+
+.featured-image {
+  width: 100%;
+  height: auto;
 }
