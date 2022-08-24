@@ -1,7 +1,7 @@
 const generateConfig = () => {
   if (import.meta.env.MODE == 'production') {
     return {
-      backend_url: 'http://api.shirincollection.com'
+      backend_url: 'https://api.shirincollection.com'
     }
   } else {
     return {
