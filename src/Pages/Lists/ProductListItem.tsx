@@ -4,16 +4,19 @@ import config from "src/config"
 import { CostsTypes } from 'src/types'
 
 
-function numberWithCommas(x) {
+function numberWithCommas(x: number) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 export const calculateCost = (product: Product, profit: number) => {
   const cost: number = product.Costs.reduce((acc: number, cost) => {
-    if (cost.__component == CostsTypes.PLURAL) {
+    const type = cost.__component
+    if (type == CostsTypes.PLURAL) {
+      //@ts-ignore
       return acc + cost.Quantity * cost.plural_cost.unit_price
     }
-    if (cost.__component == CostsTypes.SINGLE) {
+    if (type == CostsTypes.SINGLE) {
+      //@ts-ignore
       return acc + cost.cost
     }
   }, 0)
